@@ -3,7 +3,7 @@ const router = express.Router();
 const Route = require("../models/Route");
 
 /* ─────────────────────────────────────────────
-  DIJKSTRA (UNCHANGED - YOUR LOGIC IS GOOD)
+   DIJKSTRA ALGORITHM (UNCHANGED - GOOD LOGIC)
 ───────────────────────────────────────────── */
 function dijkstra(routes, source, destination) {
   const graph = {};
@@ -16,13 +16,14 @@ function dijkstra(routes, source, destination) {
     graph[to].push({ node: from, weight: distance });
   });
 
-  const nodes = [...new Set(routes.flatMap(r => [r.from, r.to]))];
+  const nodes = [...new Set(routes.flatMap((r) => [r.from, r.to]))];
+
   const dist = {};
   const prev = {};
   const visited = new Set();
   const steps = [];
 
-  nodes.forEach(n => {
+  nodes.forEach((n) => {
     dist[n] = Infinity;
     prev[n] = null;
   });
@@ -33,7 +34,7 @@ function dijkstra(routes, source, destination) {
     let current = null;
     let min = Infinity;
 
-    nodes.forEach(n => {
+    nodes.forEach((n) => {
       if (!visited.has(n) && dist[n] < min) {
         min = dist[n];
         current = n;
@@ -43,17 +44,17 @@ function dijkstra(routes, source, destination) {
     if (!current || current === destination) break;
 
     visited.add(current);
-    steps.push(`Visiting "${current}" — cost: ${dist[current]} km`);
+    steps.push(`Visiting ${current} → cost ${dist[current]}`);
 
     (graph[current] || []).forEach(({ node, weight }) => {
-      const nd = dist[current] + weight;
+      const newDist = dist[current] + weight;
 
-      if (nd < dist[node]) {
-        dist[node] = nd;
+      if (newDist < dist[node]) {
+        dist[node] = newDist;
         prev[node] = current;
-        steps.push(`✅ Updated "${node}" → ${nd}`);
+        steps.push(`✅ Updated ${node} → ${newDist}`);
       } else {
-        steps.push(`❌ Skipped "${node}"`);
+        steps.push(`❌ Skipped ${node}`);
       }
     });
   }
@@ -73,33 +74,32 @@ function dijkstra(routes, source, destination) {
   };
 }
 
-/* ───────────────────────── GET ALL ROUTES ───────────────────────── */
-/* ───────────────────────── GET ALL ROUTES ───────────────────────── */
+/* ─────────────────────────────────────────────
+   GET ALL ROUTES
+───────────────────────────────────────────── */
 router.get("/", async (req, res) => {
-  console.log("🔥 HIT GET /api/routes"); // 👈 ADD THIS HERE
-
   try {
     const routes = await Route.find().sort({ createdAt: 1 });
 
-    console.log("📦 DB ROUTES SENT:", routes);
-
-    res.json({
+    return res.json({
       success: true,
       count: routes.length,
       routes,
     });
   } catch (err) {
-    res.status(500).json({
+    console.error("GET /routes error:", err.message);
+    return res.status(500).json({
       success: false,
-      message: err.message,
+      message: "Failed to fetch routes",
     });
   }
 });
-/* ───────────────────────── POST ROUTES (FIXED) ───────────────────── */
+
+/* ─────────────────────────────────────────────
+   CREATE ROUTES
+───────────────────────────────────────────── */
 router.post("/", async (req, res) => {
   try {
-    console.log("🔥 POST BODY RECEIVED:", req.body); // 👈 ADD THIS LINE HERE
-
     let routes = req.body.routes;
 
     if (!Array.isArray(routes)) {
@@ -108,31 +108,28 @@ router.post("/", async (req, res) => {
 
     const saved = await Route.insertMany(routes);
 
-    console.log("✅ SAVED TO DB:", saved); // 👈 optional but very useful
-
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       count: saved.length,
       routes: saved,
     });
-
   } catch (err) {
-    console.error("❌ ERROR:", err);
-    res.status(500).json({
+    console.error("POST /routes error:", err.message);
+    return res.status(500).json({
       success: false,
-      message: err.message,
+      message: "Failed to create routes",
     });
   }
 });
 
-/* ───────────────────────── UPDATE ───────────────────────── */
+/* ─────────────────────────────────────────────
+   UPDATE ROUTE
+───────────────────────────────────────────── */
 router.put("/:id", async (req, res) => {
   try {
-    const { from, to, distance } = req.body;
-
     const updated = await Route.findByIdAndUpdate(
       req.params.id,
-      { from, to, distance },
+      req.body,
       { new: true, runValidators: true }
     );
 
@@ -143,19 +140,22 @@ router.put("/:id", async (req, res) => {
       });
     }
 
-    res.json({
+    return res.json({
       success: true,
       route: updated,
     });
   } catch (err) {
-    res.status(500).json({
+    console.error("PUT /routes error:", err.message);
+    return res.status(500).json({
       success: false,
-      message: err.message,
+      message: "Update failed",
     });
   }
 });
 
-/* ───────────────────────── DELETE ONE ───────────────────────── */
+/* ─────────────────────────────────────────────
+   DELETE ROUTE
+───────────────────────────────────────────── */
 router.delete("/:id", async (req, res) => {
   try {
     const deleted = await Route.findByIdAndDelete(req.params.id);
@@ -167,66 +167,72 @@ router.delete("/:id", async (req, res) => {
       });
     }
 
-    res.json({
+    return res.json({
       success: true,
       message: "Deleted successfully",
     });
   } catch (err) {
-    res.status(500).json({
+    console.error("DELETE /routes error:", err.message);
+    return res.status(500).json({
       success: false,
-      message: err.message,
+      message: "Delete failed",
     });
   }
 });
 
-/* ───────────────────────── CLEAR ALL ───────────────────────── */
+/* ─────────────────────────────────────────────
+   CLEAR ALL ROUTES
+───────────────────────────────────────────── */
 router.delete("/", async (req, res) => {
   try {
     const result = await Route.deleteMany({});
 
-    res.json({
+    return res.json({
       success: true,
       message: `${result.deletedCount} routes deleted`,
     });
   } catch (err) {
-    res.status(500).json({
+    console.error("CLEAR routes error:", err.message);
+    return res.status(500).json({
       success: false,
-      message: err.message,
+      message: "Bulk delete failed",
     });
   }
 });
 
-/* ───────────────────────── NODES ───────────────────────── */
+/* ─────────────────────────────────────────────
+   NODES
+───────────────────────────────────────────── */
 router.get("/nodes", async (req, res) => {
   try {
     const routes = await Route.find({}, "from to");
-    const nodes = [...new Set(routes.flatMap(r => [r.from, r.to]))];
+    const nodes = [...new Set(routes.flatMap((r) => [r.from, r.to]))];
 
-    res.json({
+    return res.json({
       success: true,
       nodes,
     });
   } catch (err) {
-    res.status(500).json({
+    console.error("NODES error:", err.message);
+    return res.status(500).json({
       success: false,
-      message: err.message,
+      message: "Failed to fetch nodes",
     });
   }
 });
 
-/* ───────────────────────── STATS ───────────────────────── */
+/* ─────────────────────────────────────────────
+   STATS
+───────────────────────────────────────────── */
 router.get("/stats", async (req, res) => {
   try {
     const routes = await Route.find();
 
-    const nodes = [...new Set(routes.flatMap(r => [r.from, r.to]))];
+    const nodes = [...new Set(routes.flatMap((r) => [r.from, r.to]))];
 
-    const totalDistance = routes.reduce(
-      (sum, r) => sum + r.distance,
-      0
-    );
+    const totalDistance = routes.reduce((sum, r) => sum + r.distance, 0);
 
-    res.json({
+    return res.json({
       success: true,
       stats: {
         totalRoutes: routes.length,
@@ -235,14 +241,17 @@ router.get("/stats", async (req, res) => {
       },
     });
   } catch (err) {
-    res.status(500).json({
+    console.error("STATS error:", err.message);
+    return res.status(500).json({
       success: false,
-      message: err.message,
+      message: "Stats calculation failed",
     });
   }
 });
 
-/* ───────────────────────── SHORTEST PATH ───────────────────────── */
+/* ─────────────────────────────────────────────
+   SHORTEST PATH
+───────────────────────────────────────────── */
 router.post("/shortest-path", async (req, res) => {
   try {
     const { source, destination } = req.body;
@@ -255,25 +264,26 @@ router.post("/shortest-path", async (req, res) => {
     }
 
     const routes = await Route.find();
-    const nodes = [...new Set(routes.flatMap(r => [r.from, r.to]))];
+    const nodes = [...new Set(routes.flatMap((r) => [r.from, r.to]))];
 
     if (!nodes.includes(source) || !nodes.includes(destination)) {
       return res.status(404).json({
         success: false,
-        message: "Invalid nodes",
+        message: "Invalid source or destination",
       });
     }
 
     const result = dijkstra(routes, source, destination);
 
-    res.json({
+    return res.json({
       success: true,
       ...result,
     });
   } catch (err) {
-    res.status(500).json({
+    console.error("SHORTEST PATH error:", err.message);
+    return res.status(500).json({
       success: false,
-      message: err.message,
+      message: "Path calculation failed",
     });
   }
 });

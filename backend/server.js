@@ -9,29 +9,67 @@ const routeRoutes = require("./routes/routeRoutes");
 
 const app = express();
 
-/* 🔥 IMPORTANT: use DIFFERENT port from React */
+/* ─────────────────────────────────────────────
+   PORT (Render injects this automatically)
+───────────────────────────────────────────── */
 const PORT = process.env.PORT || 5000;
 
-/* ── DB ── */
+/* ─────────────────────────────────────────────
+   DATABASE CONNECTION
+───────────────────────────────────────────── */
 connectDB();
 
-/* ── Middleware ── */
-app.use(cors());
-app.use(express.json());
+/* ─────────────────────────────────────────────
+   MIDDLEWARE
+───────────────────────────────────────────── */
+app.use(
+  cors({
+    origin: "*", // you can lock this later to GitHub Pages URL
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
 
-/* ── API ROUTES ── */
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+/* ─────────────────────────────────────────────
+   REQUEST LOGGER (helps debugging on Render)
+───────────────────────────────────────────── */
+app.use((req, res, next) => {
+  console.log(`➡️ ${req.method} ${req.url}`);
+  next();
+});
+
+/* ─────────────────────────────────────────────
+   API ROUTES
+───────────────────────────────────────────── */
 app.use("/api/routes", routeRoutes);
 
+/* ─────────────────────────────────────────────
+   HEALTH CHECK (Render uses this often)
+───────────────────────────────────────────── */
 app.get("/api/health", (req, res) => {
-  res.json({
+  res.status(200).json({
     success: true,
-    message: "Server running",
+    message: "Server running perfectly 🚀",
     time: new Date().toISOString(),
   });
 });
 
-/* ── START SERVER ── */
-app.listen(PORT, () => {
-  console.log(`🚀 Server running → http://localhost:${PORT}`);
-  console.log(`📦 MongoDB connected`);
+/* ─────────────────────────────────────────────
+   OPTIONAL FRONTEND BUILD (future use)
+───────────────────────────────────────────── */
+/*
+app.use(express.static(path.join(__dirname, "build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "build", "index.html"));
+});
+*/
+
+/* ─────────────────────────────────────────────
+  START SERVER
+───────────────────────────────────────────── */
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`🚀 Server running on port ${PORT}`);
 });
