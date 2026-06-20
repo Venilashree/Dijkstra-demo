@@ -1,0 +1,302 @@
+[{
+  "_id": {
+    "$oid": "6a339d8b76447229ef122673"
+  },
+  "from": "Warehouse",
+  "to": "HubA",
+  "distance": 5
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef122674"
+  },
+  "from": "Warehouse",
+  "to": "HubB",
+  "distance": 8
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef122675"
+  },
+  "from": "HubA",
+  "to": "Factory",
+  "distance": 4
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef122676"
+  },
+  "from": "HubA",
+  "to": "Market",
+  "distance": 7
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef122677"
+  },
+  "from": "HubB",
+  "to": "Airport",
+  "distance": 6
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef122678"
+  },
+  "from": "HubB",
+  "to": "Station",
+  "distance": 5
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef122679"
+  },
+  "from": "Factory",
+  "to": "Port",
+  "distance": 10
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef12267a"
+  },
+  "from": "Factory",
+  "to": "PowerPlant",
+  "distance": 8
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef12267b"
+  },
+  "from": "Market",
+  "to": "Residential",
+  "distance": 3
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef12267c"
+  },
+  "from": "Market",
+  "to": "Mall",
+  "distance": 4
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef12267d"
+  },
+  "from": "Residential",
+  "to": "Hospital",
+  "distance": 5
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef12267e"
+  },
+  "from": "Residential",
+  "to": "PoliceHQ",
+  "distance": 4
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef12267f"
+  },
+  "from": "Mall",
+  "to": "University",
+  "distance": 6
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef122680"
+  },
+  "from": "Mall",
+  "to": "TechPark",
+  "distance": 8
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef122681"
+  },
+  "from": "Airport",
+  "to": "Port",
+  "distance": 7
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef122682"
+  },
+  "from": "Airport",
+  "to": "DataCenter",
+  "distance": 9
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef122683"
+  },
+  "from": "Station",
+  "to": "BusDepot",
+  "distance": 2
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef122684"
+  },
+  "from": "Station",
+  "to": "University",
+  "distance": 5
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef122685"
+  },
+  "from": "University",
+  "to": "TechPark",
+  "distance": 3
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef122686"
+  },
+  "from": "TechPark",
+  "to": "DataCenter",
+  "distance": 4
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef122687"
+  },
+  "from": "Port",
+  "to": "PowerPlant",
+  "distance": 5
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef122688"
+  },
+  "from": "PowerPlant",
+  "to": "DataCenter",
+  "distance": 6
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef122689"
+  },
+  "from": "Hospital",
+  "to": "PoliceHQ",
+  "distance": 2
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef12268a"
+  },
+  "from": "PoliceHQ",
+  "to": "BusDepot",
+  "distance": 7
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef12268b"
+  },
+  "from": "BusDepot",
+  "to": "HubC",
+  "distance": 4
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef12268c"
+  },
+  "from": "HubC",
+  "to": "DataCenter",
+  "distance": 5
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef12268d"
+  },
+  "from": "Warehouse",
+  "to": "Hospital",
+  "distance": 25
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef12268e"
+  },
+  "from": "Factory",
+  "to": "University",
+  "distance": 20
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef12268f"
+  },
+  "from": "Airport",
+  "to": "TechPark",
+  "distance": 18
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef122690"
+  },
+  "from": "Port",
+  "to": "Mall",
+  "distance": 22
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef122691"
+  },
+  "from": "Market",
+  "to": "Station",
+  "distance": 3
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef122692"
+  },
+  "from": "Hospital",
+  "to": "University",
+  "distance": 4
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef122693"
+  },
+  "from": "HubA",
+  "to": "Station",
+  "distance": 6
+},
+{
+  "_id": {
+    "$oid": "6a339d8b76447229ef122694"
+  },
+  "from": "PoliceHQ",
+  "to": "DataCenter",
+  "distance": 9
+},
+{
+  "_id": {
+    "$oid": "6a33db890f108e2ceda116d9"
+  },
+  "from": "HubB",
+  "to": "Market",
+  "distance": 12,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-06-18T11:50:33.579Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-18T11:50:33.579Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a33db890f108e2ceda116da"
+  },
+  "from": "HubC",
+  "to": "HubA",
+  "distance": 10,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2026-06-18T11:50:33.580Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-18T11:50:33.580Z"
+  }
+}]
