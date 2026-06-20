@@ -1,9 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { getAllNodes, computeLayout } from "../utils/dijkstra";
+import { API_BASE_URL } from "../config";
 
-const API_BASE_URL =
-  process.env.REACT_APP_API_URL ||
-  "https://dijkstra-demo-1.onrender.com";
+
 
 function AddRoute({ routes, setRoutes }) {
   const [srcNode, setSrcNode] = useState("");

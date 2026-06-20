@@ -4,9 +4,10 @@ import Home from "./components/Home";
 import AddRoute from "./components/AddRoute";
 import RoutesView from "./components/RoutesView";
 import Simulation from "./components/Simulation";
+import { API_BASE_URL } from "./config";
 
 // ✅ FORCE ONLY RENDER BACKEND (NO LOCALHOST EVER)
-const API_BASE_URL = "https://dijkstra-demo-1.onrender.com";
+
 
 function App() {
   const [page, setPage] = useState("home");
