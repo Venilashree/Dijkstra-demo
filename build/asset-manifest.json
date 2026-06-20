@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/Dijkstra-demo/static/css/main.f14b5a12.css",
+    "main.js": "/Dijkstra-demo/static/js/main.7a39c0ef.js",
+    "index.html": "/Dijkstra-demo/index.html",
+    "main.f14b5a12.css.map": "/Dijkstra-demo/static/css/main.f14b5a12.css.map",
+    "main.7a39c0ef.js.map": "/Dijkstra-demo/static/js/main.7a39c0ef.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f14b5a12.css",
+    "static/js/main.7a39c0ef.js"
+  ]
+}
