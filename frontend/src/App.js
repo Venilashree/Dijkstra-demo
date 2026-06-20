@@ -1,108 +1,63 @@
-// ─────────────────────────────────────────────────────────────
-//  App.js  —  Root Component
-//
-//  WHAT THIS FILE DOES:
-//    • Holds the global state: which page is active + all routes
-//    • Fetches routes from MongoDB backend
-//    • Passes routes + setRoutes to child components
-//    • Automatically refreshes routes every 3 seconds
-//
-//  CONCEPTS USED:
-//    • useState
-//    • useEffect
-//    • Conditional Rendering
-//    • State Lifting
-//    • API Fetching
-// ─────────────────────────────────────────────────────────────
-
 import React, { useState, useEffect } from "react";
-
-import Navbar     from "./components/Navbar";
-import Home       from "./components/Home";
-import AddRoute   from "./components/AddRoute";
+import Navbar from "./components/Navbar";
+import Home from "./components/Home";
+import AddRoute from "./components/AddRoute";
 import RoutesView from "./components/RoutesView";
 import Simulation from "./components/Simulation";
 
+// ✅ FORCE ONLY RENDER BACKEND (NO LOCALHOST EVER)
+const API_BASE_URL = "https://dijkstra-demo-1.onrender.com";
+
 function App() {
-
-  // ── Active Page State ────────────────────────────────────
-  // Possible values:
-  // "home" | "add" | "routes" | "sim"
   const [page, setPage] = useState("home");
-
-  // ── Global Routes State ──────────────────────────────────
-  // Shared across AddRoute, RoutesView, Simulation
   const [routes, setRoutes] = useState([]);
 
-  // ── Fetch Routes From Backend ────────────────────────────
+  // ── FETCH ROUTES ─────────────────────────────
   useEffect(() => {
+    let isMounted = true;
 
-    // Function to fetch routes
-    async function fetchRoutes() {
-
+    const fetchRoutes = async () => {
       try {
+        console.log("🌐 Fetching from:", API_BASE_URL);
 
-        const res = await fetch("http://localhost:5000/api/routes");
-
+        const res = await fetch(`${API_BASE_URL}/api/routes`);
         const data = await res.json();
 
-        console.log("🔥 FRONTEND RECEIVED:", data);
+        console.log("🔥 Routes received:", data);
 
-        if (data.success) {
+        if (isMounted && data.success) {
           setRoutes(data.routes);
         }
-
       } catch (err) {
-
-        console.error("❌ FETCH ERROR:", err);
-
+        console.error("❌ Fetch error:", err);
       }
-    }
+    };
 
-    // Initial fetch when app loads
     fetchRoutes();
 
-    // Auto refresh every 3 seconds
-    const interval = setInterval(fetchRoutes, 3000);
+    const interval = setInterval(fetchRoutes, 5000);
 
-    // Cleanup interval when component unmounts
-    return () => clearInterval(interval);
-
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
   }, []);
 
-  // ── Render ───────────────────────────────────────────────
   return (
     <>
-
-      {/* ── Navbar ─────────────────────────────────────── */}
       <Navbar page={page} setPage={setPage} />
 
-      {/* ── Conditional Page Rendering ────────────────── */}
-
-      {page === "home" && (
-        <Home setPage={setPage} />
-      )}
+      {page === "home" && <Home setPage={setPage} />}
 
       {page === "add" && (
-        <AddRoute
-          routes={routes}
-          setRoutes={setRoutes}
-        />
+        <AddRoute routes={routes} setRoutes={setRoutes} />
       )}
 
       {page === "routes" && (
-        <RoutesView
-          routes={routes}
-          setRoutes={setRoutes}
-        />
+        <RoutesView routes={routes} setRoutes={setRoutes} />
       )}
 
-      {page === "sim" && (
-        <Simulation
-          routes={routes}
-        />
-      )}
-
+      {page === "sim" && <Simulation routes={routes} />}
     </>
   );
 }
